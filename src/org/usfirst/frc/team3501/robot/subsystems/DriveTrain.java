@@ -26,6 +26,7 @@ public class DriveTrain extends PIDSubsystem {
   private DoubleSolenoid leftGearPiston, rightGearPiston;
 
   private GyroLib gyro;
+  private boolean inverted;
 
   public DriveTrain() {
     super(Constants.DriveTrain.kp, Constants.DriveTrain.ki,
@@ -59,6 +60,7 @@ public class DriveTrain extends PIDSubsystem {
     rightGearPiston = new DoubleSolenoid(Constants.DriveTrain.MODULE_B_ID,
         Constants.DriveTrain.RIGHT_FORWARD, Constants.DriveTrain.RIGHT_REVERSE);
 
+    inverted = false;
   }
 
   @Override
@@ -172,10 +174,10 @@ public class DriveTrain extends PIDSubsystem {
   /*
    * Method is a required method that the PID Subsystem uses to return the
    * calculated PID value to the driver
-   * 
+   *
    * @param Gives the user the output from the PID algorithm that is calculated
    * internally
-   * 
+   *
    * Body: Uses the output, does some filtering and drives the robot
    */
   @Override
@@ -203,7 +205,7 @@ public class DriveTrain extends PIDSubsystem {
 
   /*
    * Checks the drive mode
-   * 
+   *
    * @return the current state of the robot in each state Average distance from
    * both sides of tank drive for Encoder Mode Angle from the gyro in GYRO_MODE
    */
@@ -224,7 +226,11 @@ public class DriveTrain extends PIDSubsystem {
    * because RobotDrive tankdrive method drives inverted
    */
   public void drive(double left, double right) {
-    robotDrive.tankDrive(-left, -right);
+    if (!inverted)
+      robotDrive.tankDrive(-left, -right);
+    else
+      robotDrive.tankDrive(right, left);
+
   }
 
   public void arcadeDrive(double y, double twist) {
@@ -234,9 +240,9 @@ public class DriveTrain extends PIDSubsystem {
   /*
    * constrains the distance to within -100 and 100 since we aren't going to
    * drive more than 100 inches
-   * 
+   *
    * Configure Encoder PID
-   * 
+   *
    * Sets the setpoint to the PID subsystem
    */
   public void driveDistance(double dist, double maxTimeOut) {
@@ -276,10 +282,10 @@ public class DriveTrain extends PIDSubsystem {
 
   /*
    * Turning method that should be used repeatedly in a command
-   * 
+   *
    * First constrains the angle to within -360 and 360 since that is as much as
    * we need to turn
-   * 
+   *
    * Configures Gyro PID and sets the setpoint as an angle
    */
   public void turnAngle(double angle) {
@@ -335,4 +341,11 @@ public class DriveTrain extends PIDSubsystem {
     rightGearPiston.set(gear);
   }
 
+  public boolean isInverted() {
+    return inverted;
+  }
+
+  public void toggleInversion() {
+    inverted = !inverted;
+  }
 }

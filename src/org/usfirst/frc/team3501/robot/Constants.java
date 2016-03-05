@@ -30,7 +30,7 @@ public class Constants {
 
     public final static int RIGHT_JOYSTICK_TRIGGER_PORT = 1;
     public final static int RIGHT_JOYSTICK_THUMB_PORT = 2;
-
+    public final static int RIGHT_JOYSTICK_TOP_RIGHT_PORT = 3;
     public final static int TOGGLE_SCALING_PORT = 0;
     public final static int TOGGLE_COMPRESSOR_PORT = 12;
 

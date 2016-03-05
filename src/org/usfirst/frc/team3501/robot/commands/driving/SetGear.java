@@ -1,28 +1,25 @@
 package org.usfirst.frc.team3501.robot.commands.driving;
 
-import org.usfirst.frc.team3501.robot.Constants;
 import org.usfirst.frc.team3501.robot.Robot;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class ChangeGear extends Command {
+public class SetGear extends Command {
+  private DoubleSolenoid.Value gear;
 
-  public ChangeGear() {
+  public SetGear(DoubleSolenoid.Value gear) {
     // Doesn't require drivetrain because change can be made while robot is
     // driving
+    this.gear = gear;
   }
 
   @Override
   protected void initialize() {
-    Value gear = Robot.driveTrain.getLeftGearPistonValue(); // Gears are assumed
-                                                            // to be the same
-    Value opposite = (gear == Constants.DriveTrain.HIGH_GEAR) ? Constants.DriveTrain.LOW_GEAR
-        : Constants.DriveTrain.HIGH_GEAR;
-    Robot.driveTrain.changeGear(opposite);
+    Robot.driveTrain.changeGear(gear);
   }
 
   @Override
