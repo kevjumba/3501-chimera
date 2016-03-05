@@ -39,3 +39,9 @@ sysProps.xml
 
 RemoteSystemsTempFiles
 *.orig
+build.properties
+build.xml
+.classpath
+.properties
+.project
+
